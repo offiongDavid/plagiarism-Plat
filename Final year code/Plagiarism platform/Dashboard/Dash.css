@@ -1,0 +1,367 @@
+
+*{
+ 
+   box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.links{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+   
+}
+#preloader {
+    display: none;
+    text-align: center;
+    font-size: 18px;
+}
+.link1{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.link1:hover{
+    background-color: lightblue;
+    border-radius: 5px;
+}
+.link1:focus{
+    background-color: lightblue;
+    border-radius: 5px;
+}
+.link2{
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.link3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.link2:hover{
+    background-color: lightblue;
+    border-radius: 5px;
+}
+.link2:focus{
+    background-color: lightblue;
+    border-radius: 5px;
+}
+
+
+.link3:hover{   
+    background-color: lightblue;
+    border-radius: 5px;
+}
+.link3:focus{
+    background-color: lightblue;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.PlagName{
+    font-size: 30px;
+}
+.nav-bar{
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    border-top-right-radius: 40px;
+    box-shadow: 0 0 2px;
+}
+.content{
+  
+    margin-left: 190px;
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+    overflow-y: auto;
+    border-top-left-radius: 30px;
+}
+.nav-myScans{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   
+}
+.nav-myScans i{
+color: gray;
+font-size: 20px;
+}
+.container-flex{
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+.input-content{
+    display: flex;
+    justify-content: space-around;
+    margin-block-start: 50px;
+}
+.input-content i{
+    cursor: pointer;
+}
+.input-area{
+    position: relative;
+}
+.input-area input{
+  width: 300px;
+  outline: none;
+  height: 50px;
+ /* border-radius: 20px; */
+
+}
+.PlagName{
+    font-family: "Pacifico", serif;
+    font-weight: 400;
+    font-style: normal;
+    
+  
+}
+.input-area input:focus{
+    border: 0.5px solid blue;
+}
+.input-area input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.input-area i{
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 10%;
+    top: 20%;
+    
+}
+.ri-restart-line:hover{
+    color: blue;
+}
+.ri-delete-bin-5-line{
+    color:  gray;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+th:first-child {
+    text-align: center;
+}
+th:last-child{
+    text-align: center;
+}
+.section.active {
+    display: block;
+}
+.section {
+    display: none;
+}
+
+
+.ri-upload-2-line{
+    border: 10px solid blue;
+   
+   padding: 19px;
+    font-size: 150px;
+   border-radius: 50%;
+  
+    color: blue;
+}
+.profile-section{
+    display: none;
+}
+.profile-section.active{
+    display: block;
+}
+.upload-container {
+   
+    text-align: center;
+   display: block;
+   margin: auto;
+   padding:0px   50px;
+    padding: 30px;
+    border: 2px dashed #0d6efd;
+    border-radius: 10px;
+    width: 700px;
+    border: none;
+
+}
+.text-input{
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+.file-input {
+    display: none;
+}
+.btn-psw{
+    cursor: not-allowed;
+}
+.textInput button{
+    border: 5px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 25px;
+    background:none;
+    overflow: hidden;
+   border: none;
+}
+.textInput button:hover{
+    border: 3px solid blue;
+}
+
+
+.fileInp button{
+    border: 3px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 25px;
+    background:none;
+    border: none;
+   
+}
+.fileInp button:hover{
+    border: 3px solid blue;
+}
+/* Add this CSS to your stylesheet */
+
+.button-text {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  
+  /* Shake animation */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(4px); }
+  }
+  
+  /* Apply shake on hover */
+  button:hover .button-text {
+    animation: shake 0.5s ease-in-out;
+  }
+  .hidden-section {
+    display: none;
+}
+
+.active-section {
+    display: block;
+}
+
+textarea {
+    width: 100%;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+.textarea-section {
+    margin-top: 20px;
+}
+textarea {
+    width: 100%;
+    margin-top: 10px;
+}
+#uploadedContent {
+    margin-top: 20px;
+}
+.new-page-content {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    display: none; /* Hidden by default */
+}
+.drag-over {
+    border: 2px dashed #007bff;
+    background-color: #f8f9fa;
+}
+#textArea{
+    resize: none;
+    outline: none;
+    padding: 20px;
+}
+/* Preloader container */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  /* Spinner animation */
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {    
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .logout-btn{
+    position: absolute;
+    bottom: 5%;
+  }
+  .user-info{
+    position: absolute;
+    bottom: 15%;
+    
+  }

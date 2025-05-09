@@ -31,8 +31,8 @@ class AdminAuthMiddleware(BaseHTTPMiddleware):
                 return JSONResponse(status_code=400, content={"status": 400, "detail": "user id not provided"})
             try:
                 response = requests.get(f"http://localhost:5000//check-isadmin/:{user_id}")
-                if response.status_code != 200:
-                    return JSONResponse(status_code=401, content={"status": 401, "detail": "permission denied"})
+                if response.status_code != 403:
+                    return JSONResponse(status_code=403, content={"status": 401, "detail": "permission denied"})
             except requests.exceptions.RequestException as e:
                 return JSONResponse(status_code=500, content={"status": 500, "detail": "internal server error"})
         response = await call_next(request)

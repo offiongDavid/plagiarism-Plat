@@ -188,21 +188,21 @@ app.get('/check-user-login/:userid', async (req, res) => {
 })
 
 
-// app.get('/check-isadmin/:userid', async(req, res) => {
-//     const {userid} = req.params;
-//     db.query('SELECT * FROM users WHERE id = ?', [userid], async(err, result) => {
-//         if (err) {
-//             return res.status(401).json({error: "user not found"});
-//         }
-//         if (result) {
-//             if (result.isAdmin === true) {
-//                 return res.status(200).json({message: "ok"});
-//             } else {
-//                 return res.status(403).json({error: "permission denied"});
-//             }
-//         }
-//     })
-// })
+ app.get('/check-isadmin/:userid', async(req, res) => {
+     const {userid} = req.params;
+     db.query('SELECT * FROM users WHERE id = ?', [userid], async(err, result) => {
+         if (err) {
+             return res.status(401).json({error: "user not found"});
+         }
+         if (result) {
+             if (result.isAdmin === true) {
+                 return res.status(200).json({message: "ok"});
+             } else {
+                 return res.status(403).json({error: "permission denied"});
+             }
+         }
+     })
+})
 
 
 app.get('/check-isadmin/:userid', (req, res) => {

@@ -13,6 +13,8 @@ app = FastAPI()
 import uuid
 import os
 import shutil
+from application.appmiddleware import UserAuthMiddleware, AdminAuthMiddleware
+from .evans import simi
 engine = create_engine(DATABASE_URL)
 metadata.create_all(engine)
 
@@ -30,7 +32,9 @@ VALID_CATEGORIES = (
     "other",
 )
 
-
+# middleware
+app.add_middleware(UserAuthMiddleware)
+app.add_middleware(AdminAuthMiddleware)
 
 @app.post("/api/upload-document/{userid}")
 async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = Form(...)):
@@ -60,7 +64,29 @@ async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = 
         print("writing file")
         shutil.copyfileobj(file.file, f)
         return JSONResponse(status_code=200, content={"status": 200, "detail": "file uploaded successfully"})
-        
+
+
+@app.post("/api/check/{userid}")
+async def check(userid: int, file: UploadFile = File(...), category: str = Form(...)):
+    response_data = []
+    if category not in VALID_CATEGORIES:
+        return JSONResponse(status_code=400, content={"status": 400, "detail": "invalid category"})
+    elif category == "assignment":
+        plag_files = simi(file.file, ASSIGNMENT_DIR)
+    elif category == "thesis":
+        plag_files = simi(file.file, THESIS_DIR)
+    elif category == "research":
+        plag_files = simi(file.file, RESEARCH_DIR)
+    elif category == "other":
+        plag_files = simi(file.file, OTHER_DIR)
+    for filepath, score in plag_files.items():
+        print(score.astype(float))
+        query = files.select().where(files.c.filepath == filepath.replace("/", "\\"))
+        result = await database.fetch_one(query)
+        if result:
+            response_data.append({"filename": result.filename, "similarity_score": float(f"{score:.2g}"), "category": result.category})
+    return JSONResponse(status_code=200, content={"status": 200, "detail": "file checked successfully", "data": response_data})
+
 @app.on_event("startup")
 async def startup():
     for dirs in DIRS:

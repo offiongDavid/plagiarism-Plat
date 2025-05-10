@@ -28,8 +28,3 @@ cd plagiarism-Plat/application
 pip install -r requirements.txt
 
 uvicorn application.main:app --reload
-
-
-
-
-

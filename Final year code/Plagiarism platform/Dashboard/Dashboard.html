@@ -23,10 +23,15 @@
 
 
     <div class="container-fluid">
+
+        <!-- Menu Toggle Button -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="ri-menu-line"></i>
+        </div>
+
         <main>
             <div class="container-flex">
                 <!-- Sidebar -->
-
                 <div class="nav-bar border">
                     <p class="PlagName h4 mt-4 text-center">DrexPlag</p>
                     <ul class="links nav mt-5">
@@ -36,7 +41,7 @@
                             </a>
                         </li>
 
-                    
+
                         <li class="nav-item">
                             <a class="link2 nav-link text-dark fw-medium" href="#">
                                 <img src="/Images/favourite-folder.png" width="20"> My Scans
@@ -55,10 +60,9 @@
                     </div>
 
                     <div class="logout-btn">
-                        <button class="btn btn-primary">Log out</button>
+                        <button class="btn btn-primary" id="closeBtn">Log out</button>
                     </div>
                 </div>
-
 
 
                 <!-- Content -->
@@ -129,12 +133,9 @@
                             </div>
 
 
-                            <div class="d-flex justify-content-center gap-5">
+                            <div class=" justify-content-center">
                                 <div id="textButton" class="textInput">
-                                    <button>
-                                        <span class="button-text">T</span> <br>
-                                        <span class="button-text">Text</span>
-                                    </button>
+
                                 </div>
 
                                 <div class="fileInp">
@@ -164,10 +165,8 @@
                             <select class="form-select" id="docCategory">
                                 <option selected disabled value="">Choose...</option>
                                 <option value="assignment">Assignment</option>
-                                <option value="research">Research Work</option> 
-                                <option value="article">Article</option>
+                                <option value="research">Research Work</option>
                                 <option value="thesis">Thesis</option>
-                                <option value="publication">Publication</option>
                                 <option value="others">Others</option>
                             </select>
                         </div>
@@ -191,10 +190,6 @@
 
                     <div id="profileSection" class="profile-section">
                         <p class="h1">Profile</p>
-
-
-
-
 
                         <div class="profile-body">
 
@@ -223,8 +218,8 @@
 
                         </div>
                     </div>
-
                 </div>
+            </div>
         </main>
     </div>
 

@@ -157,7 +157,7 @@ const fileIcons = {
 // Variable to store the currently selected row index
 let selectedRowIndex = null;
 
-// Preloader Element
+
 
 // Handle file upload and display the file details in the table
 function handleUpload(event) {
@@ -322,11 +322,36 @@ const password = localStorage.getItem('password');
 document.getElementById('profilePassword').textContent = password;
 
 // Optional: Clear email and token from localStorage on logout
-document.querySelector('.logout-btn button').addEventListener('click', () => {
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('token');
-    window.location.href = '/Final year code/Plagiarism platform/Registration/login.html'; // Redirect to login or registration page
+document.querySelector('.logout-btn button').addEventListener('click', async () => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        try {
+            const response = await fetch('http://localhost:5000/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('token');
+                window.location.href = '/Final year code/Plagiarism platform/Registration/login.html';
+            } else {
+                const data = await response.json();
+                alert("Logout failed: " + data.message);
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert("An error occurred during logout.");
+        }
+    } else {
+        window.location.href = '/Final year code/Plagiarism platform/Registration/login.html'; // fallback
+    }
 });
+
 
 
 const userInp = document.getElementById("userName");
@@ -341,7 +366,6 @@ upDate.addEventListener("click", function () {
 }
 
 )
-
 
 
 function testClick() {
@@ -359,3 +383,9 @@ function testClick() {
     }
 
 }
+
+  function toggleMenu() {
+    const sidebar = document.querySelector('.nav-bar');
+    sidebar.classList.toggle('active');
+  }
+

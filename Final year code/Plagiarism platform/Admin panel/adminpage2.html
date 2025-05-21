@@ -85,7 +85,7 @@
                         Activity</a>
                     <a href="#reports" class="list-group-item list-group-item-action bg-dark text-white">Reports</a>
                     <a href="#settings" class="list-group-item list-group-item-action bg-dark text-white">Settings</a>
-                    <a href="logout.php" class="list-group-item list-group-item-action bg-danger text-white">Logout</a>
+                    <a href="logout" class="list-group-item list-group-item-action bg-danger text-white">Logout</a>
                 </div>
             </div>
         </div>
@@ -141,9 +141,7 @@
                             <option selected disabled value="">Choose...</option>
                             <option value="assignment">Assignment</option>
                             <option value="research">Research Work</option>
-                            <option value="article">Article</option>
                             <option value="thesis">Thesis</option>
-                            <option value="publication">Publication</option>
                             <option value="others">Others</option>
                         </select>
                     </div>
@@ -176,13 +174,12 @@
                     <option disabled selected value="">View by Category</option>
                     <option value="assignment">Assignments</option>
                     <option value="research">Research</option>
-                    <option value="article">Articles</option>
                     <option value="thesis">Thesis</option>
-                    <option value="publication">Publications</option>
                     <option value="others">Others</option>
                   </select>
                   
-                  <div id="documentsContainer" class="mt-4"></div>
+
+                <div id="documentsContainer" class="mt-4"></div>
                   
 
             </div>
@@ -264,12 +261,10 @@
         const API_URL = "http://localhost:5000"; // Adjust if hosted online
 
         // Fetch Total Users, Active Users, and New Registrations
-        // Load user dashboard stats
         async function loadDashboardStats() {
             try {
                 const res = await fetch(`${API_URL}/dashboard-stats`);
                 const data = await res.json();
-
                 document.getElementById("total-users").innerText = data.totalUsers;
                 document.getElementById("active-users").innerText = data.activeUsers;
                 document.getElementById("new-users").innerText = data.newUsers;
@@ -282,6 +277,8 @@
         loadDashboardStats();
 
 
+
+        
         // Fetch and display all users
         async function loadUsers() {
             try {
@@ -310,7 +307,7 @@
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Login required');
-            window.location.href = './login.html';
+            window.location.href = '/Final year code/Plagiarism platform/Registration/login.html';
         }
 
 
@@ -491,13 +488,10 @@
         });
 }
 
-
-
-
-
-
-
     </script>
+
+
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>

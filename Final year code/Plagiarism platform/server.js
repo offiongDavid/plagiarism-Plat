@@ -153,25 +153,24 @@ app.post('/login', (req, res) => {
 });
 
 
-// app.post('/logout', (req, res) => {
-//     const token = req.headers.authorization?.split(" ")[1];
-//     if (!token) return res.status(400).json({ message: "Token not provided" });
+app.post('/logout', (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(400).json({ message: "Token not provided" });
 
-//     try {
-//         // Verify token
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-//         // Set isUserLoggedIn to 0 (false)
-//         db.query('UPDATE users SET isUserLoggedIn = 0 WHERE id = ?', [decoded.id], (err) => {
-//             if (err) {
-//                 return res.status(500).json({ message: "Error logging out" });
-//             }
-//             res.status(200).json({ message: "Logged out successfully" });
-//         });
-//     } catch (error) {
-//         res.status(401).json({ message: "Invalid token" });
-//     }
-// });
+        db.query('UPDATE users SET isUserLoggedIn = 0 WHERE id = ?', [decoded.id], (err) => {
+            if (err) {
+                return res.status(500).json({ message: "Error logging out" });
+            }
+            res.status(200).json({ message: "Logged out successfully" });
+        });
+    } catch (error) {
+        res.status(401).json({ message: "Invalid token" });
+    }
+});
+
 
 
 app.get('/check-user-login/:userid', async (req, res) => {
@@ -224,39 +223,6 @@ app.get('/check-isadmin/:userid', (req, res) => {
         }
     });
 });
-
-
-
-// // Middleware to verify token
-// function verifyToken(req, res, next) {
-//     const authHeader = req.headers('Authorization');
-//     const token = authHeader && authHeader.split(' ')[1];
-
-//     if (!token) return res.status(403).json({ error: 'Token required' });
-
-//     try {
-//         const user = jwt.verify(token, process.env.JWT_SECRET)
-//         req.user = user; // contains userId and isAdmin
-//         next();
-//     } catch (error) {
-//         return res.status(403).json({ error: 'Invalid token' });
-//     }
-// }
-
-// // Verify admin route
-// app.get('/verifyAdmin', verifyToken, (req, res) => {
-//     if (req.user.isAdmin === 1 || req.user.isAdmin === true) {
-//         res.json({ isAdmin: true });
-//     } else {
-//         res.status(403).json({ isAdmin: false });
-//     }
-// });
-
-
-
-
-
-
 
 
 
@@ -323,7 +289,7 @@ app.get('/users', (req, res) => {
 });
 
 
-
+//Dashboard- stats for the admin panel
 app.get('/dashboard-stats', (req, res) => {
     const totalUsersQuery = "SELECT COUNT(*) AS totalUsers FROM users";
     const activeUsersQuery = "SELECT COUNT(*) AS activeUsers FROM users WHERE isUserLoggedIn = 1";
@@ -371,7 +337,8 @@ app.get('/login-activity', (req, res) => {
         const logs = results.map(user => ({
             email: user.email,
             login_time: user.login_time || "–",
-            status: user.isUserLoggedIn ? "Online" : "Offline"
+           status: user.isUserLoggedIn ? "Online" : "Offline"
+  
         }));
 
         res.json(logs);

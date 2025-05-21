@@ -139,7 +139,8 @@ app.post('/login', (req, res) => {
             res.status(200).json({
                 message: 'Login successful',
                 token,
-                isAdmin: user.isAdmin
+                isAdmin: user.isAdmin,
+                userId: user.id 
             });
 
         } catch (error) {

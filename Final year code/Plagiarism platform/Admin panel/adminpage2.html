@@ -243,6 +243,7 @@
         document.getElementById('total-users').innerText = '250';
         document.getElementById('active-users').innerText = '45';
         document.getElementById('new-users').innerText = '10';
+        const data = new FormData();
 
         // Chart.js for reports
         var ctx = document.getElementById('analyticsChart').getContext('2d');
@@ -304,11 +305,11 @@
         }
 
 
-        const token = localStorage.getItem('token');
+        /*const token = localStorage.getItem('token');
         if (!token) {
             alert('Login required');
             window.location.href = '/Final year code/Plagiarism platform/Registration/login.html';
-        }
+        }*/
 
 
 
@@ -339,6 +340,7 @@
         }
 
         // Call this on page load
+        
         loadLoginActivity();
 
         // Function to delete a user
@@ -394,6 +396,7 @@
 
             // Extract title from filename
             document.getElementById('extractedTitle').value = file.name.replace(/\.[^/.]+$/, "");
+            data.append("file", file);
 
             // Extract content
             if (file.name.endsWith(".pdf")) {
@@ -426,28 +429,26 @@
         });
 
         function uploadToInstitutionDB() {
-            const title = document.getElementById('extractedTitle').value.trim();
-            const content = document.getElementById('adminExtractedText').value.trim();
-            const category = document.getElementById('adminDocCategory').value;
+            data.append("title", document.getElementById('extractedTitle').value.trim());
+            data.append("category", document.getElementById('adminDocCategory').value.toLowerCase().split(" ")[0]);
 
-            if (!title || !content || !category) {
+            if (!data.get('title') || !data.get("file") || !data.get("category")) {
                 alert("Please complete all fields before uploading.");
                 return;
             }
-
-            fetch('http://localhost:5000/upload-institution-doc', {
+            const userid = localStorage.getItem('userid');
+            fetch(`http://127.0.0.1:8000/api/upload-document/${1}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, content, category })
+                body: data,
             })
-                .then(data => {
+                .then(response => {
+                    console.log(response.status);
                     alert(data.message || "Document uploaded successfully!");
                     document.getElementById('adminFileInput').value = "";
                     document.getElementById('extractedTitle').value = "";
                     document.getElementById('adminExtractedText').value = "";
                     document.getElementById('adminDocCategory').value = "";
+                 
                 }).catch(err => {
                     console.error("Upload error:", err);
                     alert("Upload failed.");

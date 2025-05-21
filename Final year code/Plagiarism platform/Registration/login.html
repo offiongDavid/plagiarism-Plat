@@ -81,9 +81,7 @@
                     localStorage.setItem('token', data.token); // Save token
                     localStorage.setItem('userEmail', email); // Save email
                     localStorage.setItem('isAdmin', data.isAdmin);
-
-
-
+                    localStorage.setItem('userid', data.userid); // Save user ID
 
                     if (data.isAdmin === 1) {
                         window.location.href = '/Final year code/Plagiarism platform/Admin panel/adminpage2.html'; // Admin dashboard

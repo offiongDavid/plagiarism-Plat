@@ -6,7 +6,7 @@ import requests
 '/check-user-login/:userid'
 class UserAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/api/upload-document") or request.url.path.startswith("/api/check"):
+        if request.url.path.startswith("/api/upload-documents") or request.url.path.startswith("/api/check"):
             path_arr = request.url.path.split("/")[1:]
             if len(path_arr) == 3:
                 user_id = path_arr[-1]
@@ -23,7 +23,7 @@ class UserAuthMiddleware(BaseHTTPMiddleware):
 
 class AdminAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/api/check"):
+        if request.url.path.startswith("/api/checks"):
             path_arr = request.url.path.split("/")[1:]
             if len(path_arr) == 3:
                 user_id = path_arr[-1]

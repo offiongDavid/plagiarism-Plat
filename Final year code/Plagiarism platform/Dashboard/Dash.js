@@ -369,18 +369,35 @@ upDate.addEventListener("click", function () {
 
 
 function testClick() {
-    const selectedCategory = document.getElementById('docCategory').value;
-    const textContent = document.getElementById('textArea').value;
+   
+    const category = document.getElementById('docCategory').value;
+    const fileInput = document.getElementById('uploadFileInput'); // We’ll add this input
+    const file = fileInput.files[0];
 
-    if (!selectedCategory) {
-        alert("Please select a document type before scanning.");
+    if (!category || !file) {
+        alert("Please select a category and upload a PDF document.");
         return;
     }
 
-    if (!textContent.trim()) {
-        alert("Please enter or upload some content before scanning.");
-        return;
-    }
+    const formData = new FormData();
+    formData.append('category', category);
+    formData.append('file', file);
+    const userid = localStorage.getItem("userid");
+fetch(`http://localhost:8000/api/check/${userid}`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Upload success:', data);
+        alert('Document sent successfully!');
+    })
+    .catch(err => {
+        console.error('Upload failed:', err);
+        alert('There was an error uploading your document.');
+    });
+
+
 
 }
 

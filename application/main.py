@@ -5,7 +5,6 @@ from fastapi.responses import JSONResponse
 from datetime import datetime
 from fastapi import FastAPI, Depends, Security, UploadFile, File, Form
 from fastapi.security import HTTPBearer 
-from .utils import VerifyToken
 from .db import database, metadata, DATABASE_URL
 from sqlalchemy import create_engine
 from .models import files
@@ -13,6 +12,7 @@ app = FastAPI()
 import uuid
 import os
 import shutil
+from fastapi.middleware.cors import CORSMiddleware
 from application.appmiddleware import UserAuthMiddleware, AdminAuthMiddleware
 from .evans import simi
 engine = create_engine(DATABASE_URL)
@@ -29,12 +29,26 @@ VALID_CATEGORIES = (
     "assignment",
     "thesis",
     "research",
-    "other",
+    "others",
 )
 
 # middleware
 app.add_middleware(UserAuthMiddleware)
 app.add_middleware(AdminAuthMiddleware)
+
+
+origins = [
+    "http://127.0.0.1:5501",
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # List of allowed origins
+    allow_credentials=True,           # Allows cookies/auth headers
+    allow_methods=["*"],              # Allows all HTTP methods
+    allow_headers=["*"],              # Allows all headers
+)
 
 @app.post("/api/upload-document/{userid}")
 async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = Form(...)):
@@ -55,7 +69,7 @@ async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = 
         file_location = os.path.join(RESEARCH_DIR, filename)
         query = files.insert().values(id=str(uuid.uuid4), filepath=file_location, filename=file.filename, userid=userid, category=category, created_at=datetime.now(), updated_at=datetime.now())
         await database.execute(query)
-    elif category == "other":
+    elif category == "others":
         filename = str(uuid.uuid4()) + ".pdf"
         file_location = os.join(OTHER_DIR, filename)
         query = files.insert().values(id=str(uuid.uuid4), filepath=file_location, filename=file.filename, userid=userid, category=category, created_at=datetime.now(), updated_at=datetime.now())
@@ -77,10 +91,9 @@ async def check(userid: int, file: UploadFile = File(...), category: str = Form(
         plag_files = simi(file.file, THESIS_DIR)
     elif category == "research":
         plag_files = simi(file.file, RESEARCH_DIR)
-    elif category == "other":
+    elif category == "others":
         plag_files = simi(file.file, OTHER_DIR)
     for filepath, score in plag_files.items():
-        print(score.astype(float))
         query = files.select().where(files.c.filepath == filepath.replace("/", "\\"))
         result = await database.fetch_one(query)
         if result:

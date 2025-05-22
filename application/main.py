@@ -33,8 +33,8 @@ VALID_CATEGORIES = (
 )
 
 # middleware
-#app.add_middleware(UserAuthMiddleware)
-#app.add_middleware(AdminAuthMiddleware)
+app.add_middleware(UserAuthMiddleware)
+app.add_middleware(AdminAuthMiddleware)
 
 
 origins = [

@@ -6,7 +6,7 @@ import requests
 '/check-user-login/:userid'
 class UserAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/api/upload-documents") or request.url.path.startswith("/api/check"):
+        if request.url.path.startswith("/api/upload-document") or request.url.path.startswith("/api/check"):
             path_arr = request.url.path.split("/")[1:]
             if len(path_arr) == 3:
                 user_id = path_arr[-1]
@@ -23,7 +23,7 @@ class UserAuthMiddleware(BaseHTTPMiddleware):
 
 class AdminAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith("/api/checks"):
+        if request.url.path.startswith("api/check"):
             path_arr = request.url.path.split("/")[1:]
             if len(path_arr) == 3:
                 user_id = path_arr[-1]
@@ -34,6 +34,6 @@ class AdminAuthMiddleware(BaseHTTPMiddleware):
                 if response.status_code != 403:
                     return JSONResponse(status_code=403, content={"status": 401, "detail": "permission denied"})
             except requests.exceptions.RequestException as e:
-                return JSONResponse(status_code=500, content={"status": 500, "detail": "internal server error"})
+                return JSONResponse(status_code=500, content={"status": 500, "detail": "internal server wait"})
         response = await call_next(request)
         return response

@@ -33,8 +33,8 @@ VALID_CATEGORIES = (
 )
 
 # middleware
-app.add_middleware(UserAuthMiddleware)
-app.add_middleware(AdminAuthMiddleware)
+#app.add_middleware(UserAuthMiddleware)
+#app.add_middleware(AdminAuthMiddleware)
 
 
 origins = [
@@ -83,6 +83,7 @@ async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = 
 @app.post("/api/check/{userid}")
 async def check(userid: int, file: UploadFile = File(...), category: str = Form(...)):
     response_data = []
+    print(category)
     if category not in VALID_CATEGORIES:
         return JSONResponse(status_code=400, content={"status": 400, "detail": "invalid category"})
     elif category == "assignment":

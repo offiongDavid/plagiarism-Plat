@@ -157,7 +157,7 @@ const fileIcons = {
 // Variable to store the currently selected row index
 let selectedRowIndex = null;
 
-
+const formData = new FormData();
 
 // Handle file upload and display the file details in the table
 function handleUpload(event) {
@@ -165,6 +165,7 @@ function handleUpload(event) {
 
     // Add new files to the storedFiles array
     let files = event.target.files;
+    formData.append("file", files[0]);
     for (let i = 0; i < files.length; i++) {
         let file = files[i];
         let fileName = file.name;
@@ -372,18 +373,18 @@ function testClick() {
    
     const category = document.getElementById('docCategory').value;
     const fileInput = document.getElementById('uploadFileInput'); // We’ll add this input
-    const file = fileInput.files[0];
 
-    if (!category || !file) {
+
+
+
+
+    formData.append('category', category);
+    const userid = localStorage.getItem("userid");
+    if (!category || !formData.get("file")) {
         alert("Please select a category and upload a PDF document.");
         return;
     }
-
-    const formData = new FormData();
-    formData.append('category', category);
-    formData.append('file', file);
-    const userid = localStorage.getItem("userid");
-fetch(`http://localhost:8000/api/check/${userid}`, {
+fetch(`http://localhost:8000/api/check/${1}`, {
         method: 'POST',
         body: formData
     })

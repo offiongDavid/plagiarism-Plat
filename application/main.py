@@ -98,7 +98,11 @@ async def check(userid: int, file: UploadFile = File(...), category: str = Form(
         query = files.select().where(files.c.filepath == filepath.replace("/", "\\"))
         result = await database.fetch_one(query)
         if result:
-            response_data.append({"filename": result.filename, "similarity_score": float(f"{score:.2g}"), "category": result.category})
+   #made changes here added read content
+            with open(filepath, "r", encoding="utf-8") as f:
+              content = f.read()
+              # here
+            response_data.append({"filename": result.filename, "similarity_score": float(f"{score:.2g}"), "category": result.category ,"content": content})
     return JSONResponse(status_code=200, content={"status": 200, "detail": "file checked successfully", "data": response_data})
 
 @app.on_event("startup")

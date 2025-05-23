@@ -101,7 +101,7 @@ dropArea.addEventListener('drop', function (event) {
 // Handle file upload and display content
 function handleFileUpload(files) {
     const fileType = files.type;
-   
+
     if (fileType !== 'application/pdf') {
         alert("Only PDF files are allowed.");
         return;
@@ -170,13 +170,13 @@ function handleUpload(event) {
         let file = files[i];
         let fileName = file.name;
 
-        
+
         // ✅ Check for PDF only
         if (file.type !== 'application/pdf') {
             alert("Only PDF files are allowed.");
             continue;
         }
-        
+
         let fileExtension = file.name.split('.').pop().toLowerCase(); // Extract extension
         let fileDate = new Date().toLocaleDateString(); // Current date
         let plagiarismScore = "Not checked"; // Placeholder
@@ -369,13 +369,13 @@ upDate.addEventListener("click", function () {
 )
 
 
-function testClick() {
-   
+async function testClick() {
+    const scanBtn = document.getElementById("scanBtn");
     const category = document.getElementById('docCategory').value;
     const fileInput = document.getElementById('uploadFileInput'); // We’ll add this input
 
 
-
+    
 
 
     formData.append('category', category);
@@ -383,27 +383,59 @@ function testClick() {
     if (!category || !formData.get("file")) {
         alert("Please select a category and upload a PDF document.");
         return;
+    }else{
+        scanBtn.textContent = "Scanning...";
+        scanBtn.disabled = true;
     }
-fetch(`http://localhost:8000/api/check/${1}`, {
+
+
+    fetch(`http://localhost:8000/api/check/${1}`, {
         method: 'POST',
         body: formData
     })
-    .then(res => res.json())
-    .then(data => {
-        console.log('Upload success:', data);
-        alert('Document sent successfully!');
-    })
-    .catch(err => {
-        console.error('Upload failed:', err);
-        alert('There was an error uploading your document.');
-    });
+        .then(res => res.json())
+        .then(data => {
+            console.log('Upload success:', data);
+            alert('Document sent successfully!');
+        })
+        .catch(err => {
+            console.error('Upload failed:', err);
+            alert('There was an error uploading your document.');
+        });
 
 
 
 }
 
-  function toggleMenu() {
+
+function displayResults(results) {
+    const resultDiv = document.getElementById("scanResults");
+
+    if (!results.length) {
+        resultDiv.innerHTML = "<p>No similar documents found.</p>";
+        return;
+    }
+
+    let html = "<h3>Plagiarism Results:</h3><ul>";
+    results.forEach(item => {
+        html += `
+            <li>
+                <strong>Filename:</strong> ${item.filename}<br>
+                <strong>Similarity Score:</strong> ${(item.similarity_score * 100).toFixed(2)}%<br>
+                <strong>Category:</strong> ${item.category}<br>
+                <details>
+                    <summary>View Content</summary>
+                    <pre style="white-space: pre-wrap;">${item.content}</pre>
+                </details>
+            </li><br>
+        `;
+    });
+    html += "</ul>";
+    resultDiv.innerHTML = html;
+}
+
+function toggleMenu() {
     const sidebar = document.querySelector('.nav-bar');
     sidebar.classList.toggle('active');
-  }
+}
 

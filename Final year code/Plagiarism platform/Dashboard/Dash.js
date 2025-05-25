@@ -396,10 +396,15 @@ async function testClick() {
         .then(res => res.json())
         .then(data => {
             console.log('Upload success:', data);
+            displayResults(data.data);
+            scanBtn.textContent = "Scan Document";
+            scanBtn.disabled = false;
             alert('Document sent successfully!');
         })
         .catch(err => {
             console.error('Upload failed:', err);
+            scanBtn.textContent = "Scan Document";
+            scanBtn.disabled = false;
             alert('There was an error uploading your document.');
         });
 

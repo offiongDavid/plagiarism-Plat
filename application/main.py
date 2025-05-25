@@ -15,6 +15,8 @@ import shutil
 from fastapi.middleware.cors import CORSMiddleware
 from application.appmiddleware import UserAuthMiddleware, AdminAuthMiddleware
 from .evans import simi
+from PyPDF2 import PdfReader
+
 engine = create_engine(DATABASE_URL)
 metadata.create_all(engine)
 
@@ -83,7 +85,8 @@ async def upload_pdf(userid: int, file: UploadFile = File(...), category: str = 
 @app.post("/api/check/{userid}")
 async def check(userid: int, file: UploadFile = File(...), category: str = Form(...)):
     response_data = []
-    print(category)
+    if "pdf" != file.filename.split(".")[-1].lower():
+        return JSONResponse(status_code=400, content={"status": 400, "detail": "file is not a pdf"})
     if category not in VALID_CATEGORIES:
         return JSONResponse(status_code=400, content={"status": 400, "detail": "invalid category"})
     elif category == "assignment":
@@ -98,10 +101,14 @@ async def check(userid: int, file: UploadFile = File(...), category: str = Form(
         query = files.select().where(files.c.filepath == filepath.replace("/", "\\"))
         result = await database.fetch_one(query)
         if result:
+            with open(filepath, "rb") as f:
+                reader = PdfReader(f)
+                content = ""
+                for page in reader.pages:
+                    extract = page.extract_text()
+                    if extract:
+                        content += extract + "\n"
    #made changes here added read content
-            with open(filepath, "r", encoding="utf-8") as f:
-              content = f.read()
-              # here
             response_data.append({"filename": result.filename, "similarity_score": float(f"{score:.2g}"), "category": result.category ,"content": content})
     return JSONResponse(status_code=200, content={"status": 200, "detail": "file checked successfully", "data": response_data})
 

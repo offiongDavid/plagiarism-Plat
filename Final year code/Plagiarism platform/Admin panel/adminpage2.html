@@ -66,7 +66,8 @@
                         Activity</a>
                     <a href="#reports" class="list-group-item list-group-item-action bg-dark text-white">Reports</a>
                     <a href="#settings" class="list-group-item list-group-item-action bg-dark text-white">Settings</a>
-                    <a href="logout.php" class="list-group-item list-group-item-action bg-danger text-white">Logout</a>
+                    <a href="/Final year code/Plagiarism platform/Registration/login.html"
+                        class="list-group-item list-group-item-action bg-danger text-white" id="logout-link">Logout</a>
                 </div>
             </div>
         </div>
@@ -85,7 +86,8 @@
                         Activity</a>
                     <a href="#reports" class="list-group-item list-group-item-action bg-dark text-white">Reports</a>
                     <a href="#settings" class="list-group-item list-group-item-action bg-dark text-white">Settings</a>
-                    <a href="logout" class="list-group-item list-group-item-action bg-danger text-white">Logout</a>
+                    <a href="/Final year code/Plagiarism platform/Registration/login.html"
+                        class="list-group-item list-group-item-action bg-danger text-white" id="logout-link">Logout</a>
                 </div>
             </div>
         </div>
@@ -176,11 +178,11 @@
                     <option value="research">Research</option>
                     <option value="thesis">Thesis</option>
                     <option value="others">Others</option>
-                  </select>
-                  
+                </select>
+
 
                 <div id="documentsContainer" class="mt-4"></div>
-                  
+
 
             </div>
 
@@ -279,7 +281,7 @@
 
 
 
-        
+
         // Fetch and display all users
         async function loadUsers() {
             try {
@@ -305,11 +307,11 @@
         }
 
 
-        /*const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         if (!token) {
             alert('Login required');
             window.location.href = '/Final year code/Plagiarism platform/Registration/login.html';
-        }*/
+        }
 
 
 
@@ -340,7 +342,7 @@
         }
 
         // Call this on page load
-        
+
         loadLoginActivity();
 
         // Function to delete a user
@@ -374,10 +376,19 @@
 
         document.querySelectorAll('.list-group-item-action').forEach(link => {
             link.addEventListener('click', function (e) {
-                const hash = this.getAttribute('href').substring(1);
-                if (hash !== 'logout.php') {
-                    e.preventDefault();
-                    showSection(hash);
+                const href = this.getAttribute('href');
+
+                // If it's the logout link (your desired logout page)
+                if (href === "/Final year code/Plagiarism platform/Registration/login.html") {
+                    // Let it proceed normally — no preventDefault
+                    return;
+                }
+
+                // For other links with #hash navigation
+                const hash = href.startsWith('#') ? href.substring(1) : null;
+                if (hash) {
+                    e.preventDefault(); // stop browser from jumping
+                    showSection(hash);  // custom function to show section
                 }
             });
         });
@@ -437,7 +448,7 @@
                 return;
             }
             const userid = localStorage.getItem('userid');
-            fetch(`http://127.0.0.1:8000/api/upload-document/${1}`, {
+            fetch(`http://127.0.0.1:8000/api/upload-document/${user.id}`, {
                 method: 'POST',
                 body: data,
             })
@@ -448,46 +459,19 @@
                     document.getElementById('extractedTitle').value = "";
                     document.getElementById('adminExtractedText').value = "";
                     document.getElementById('adminDocCategory').value = "";
-                 
+
                 }).catch(err => {
                     console.error("Upload error:", err);
                     alert("Upload failed.");
                 });
         }
 
-          
 
-        function loadCategoryDocs() {
-    const category = document.getElementById('categoryFilter').value;
-    if (!category) return;
+        function logOutBtn() {
+            window.href = '/Final year code/Plagiarism platform/Registration/login.html';
+        }
 
-    fetch(`http://localhost:5000/get-documents/${category}`)
-        .then(res => res.json())
-        .then(data => {
-            const container = document.getElementById('documentsContainer');
-            container.innerHTML = '';
 
-            if (data.length === 0) {
-                container.innerHTML = '<p>No documents found in this category.</p>';
-                return;
-            }
-
-            data.forEach(doc => {
-                const docCard = `
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5>${doc.title}</h5>
-                            <small>Uploaded: ${new Date(doc.upload_date).toLocaleString()}</small>
-
-                            <!-- Read-only text area to display document content -->
-                            <textarea class="form-control mt-3" rows="6" readonly>${doc.content}</textarea>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += docCard;
-            });
-        });
-}
 
     </script>
 

@@ -23,10 +23,25 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const allowedOrigins = [
+  'http://localhost:8000',
+  'http://127.0.0.1:5500'
+];
+
 app.use(cors({
-    origin: "http://localhost:8000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow cookies if needed
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
+
 
 
 

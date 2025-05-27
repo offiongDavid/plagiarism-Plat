@@ -193,11 +193,17 @@ app.post('/logout', (req, res) => {
 
 app.get('/check-user-login/:userid', async (req, res) => {
     const { userid } = req.params;
-    db.query('SELECT * FROM users WHERE id = ?', [userid], async (err, user) => {
+    db.query('SELECT * FROM users WHERE id = ?', [userid], async (err, users) => {
         if (err) {
-            return res.status(404).json({ error: "user not found" })
+            return res.status(500).json({ error: "database error" })
         }
-        if (user) {
+
+        if (users.length === 0) {
+            return res.status(404).json({ error: "user not found" });
+        }
+
+        else {
+            const user = users[0];
             if (user.isUserLoggedIn === true) {
                 return res.status(200).json({ detail: "ok" })
             } else {

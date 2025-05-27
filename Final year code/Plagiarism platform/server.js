@@ -204,7 +204,7 @@ app.get('/check-user-login/:userid', async (req, res) => {
 
         else {
             const user = users[0];
-            if (user.isUserLoggedIn === true) {
+            if (user.isUserLoggedIn === 1) {
                 return res.status(200).json({ detail: "ok" })
             } else {
                 return res.status(401).json({ error: "authentication required" });

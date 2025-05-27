@@ -448,8 +448,12 @@
                 return;
             }
             const userid = localStorage.getItem('userid');
-            fetch(`http://127.0.0.1:8000/api/upload-document/${user.id}`, {
+            const token = localStorage.getItem("token");
+            fetch(`http://127.0.0.1:8000/api/upload-document/${userid}`, {
                 method: 'POST',
+                headers: {
+                    "Authorization": `Bearer ${token}` // ✅ Pass the token here
+                },
                 body: data,
             })
                 .then(response => {

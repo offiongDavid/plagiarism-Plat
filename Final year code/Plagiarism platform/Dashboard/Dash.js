@@ -48,7 +48,7 @@ link3.addEventListener('click', (e) => {
 // Get elements for buttons and file upload
 const textButton = document.getElementById('textButton');
 const fileButton = document.getElementById('fileButton');
-const newScanFileInput = document.getElementById('newScanFileInput');
+const newScanFileInput = document.getElementById('uploadFileInput');
 const textArea = document.getElementById('textArea');
 const goBackLink = document.getElementById('goBackLink');
 const dropArea = document.getElementById('dropArea');
@@ -362,55 +362,51 @@ upDate.addEventListener("click", function () {
     const userVal = document.getElementById("userName").value;
     useName.textContent = userVal;
     userInp.style.display = `none`;
-
-
 }
 
 )
 
-
 async function testClick() {
-    const scanBtn = document.getElementById("scanBtn");
     const category = document.getElementById('docCategory').value;
-    const fileInput = document.getElementById('uploadFileInput'); // We’ll add this input
+    const fileInput = document.getElementById('uploadFileInput'); 
 
-
-    
-
-
-    formData.append('category', category);
-    const userid = localStorage.getItem("userid");
-    if (!category || !formData.get("file")) {
+    if (!category || !fileInput.files[0]) {
         alert("Please select a category and upload a PDF document.");
         return;
-    }else{
-        scanBtn.textContent = "Scanning...";
-        scanBtn.disabled = true;
     }
 
+    const formData = new FormData();
+    formData.append('category', category);
+    formData.append('file', fileInput.files[0]);
 
-    fetch(`http://localhost:8000/api/check/${1}`, {
-        method: 'POST',
-        body: formData
-    })
-        .then(res => res.json())
-        .then(data => {
-            console.log('Upload success:', data);
-            displayResults(data.data);
-            scanBtn.textContent = "Scan Document";
-            scanBtn.disabled = false;
-            alert('Document sent successfully!');
-        })
-        .catch(err => {
-            console.error('Upload failed:', err);
-            scanBtn.textContent = "Scan Document";
-            scanBtn.disabled = false;
-            alert('There was an error uploading your document.');
+    const userid = localStorage.getItem("userid");
+    const token = localStorage.getItem("token");
+
+    try {
+        const res = await fetch(`http://localhost:8000/api/check/${userid}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+                // DO NOT set Content-Type here manually
+            },
+            body: formData
         });
 
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.detail || 'Upload failed');
+        }
 
-
+        const data = await res.json();
+        console.log('Upload success:', data);
+        alert('Document sent successfully!');
+    } catch (err) {
+        console.error('Upload failed:', err);
+        alert('There was an error uploading your document: ' + err.message);
+    }
 }
+
+
 
 
 function displayResults(results) {

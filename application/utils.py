@@ -19,7 +19,7 @@ class UnauthenticatedException(HTTPException):
 
 class VerifyToken:
     """Does all the token verification using PyJWT"""
-
+    
     def __init__(self):
         self.config = get_settings()
 

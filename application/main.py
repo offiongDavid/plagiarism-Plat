@@ -17,6 +17,11 @@ from application.appmiddleware import UserAuthMiddleware, AdminAuthMiddleware
 from .evans import simi
 from PyPDF2 import PdfReader
 
+
+
+
+
+
 engine = create_engine(DATABASE_URL)
 metadata.create_all(engine)
 
@@ -40,7 +45,10 @@ app.add_middleware(AdminAuthMiddleware)
 
 
 origins = [
-    "http://127.0.0.1:5501",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500", 
+    "http://localhost:8000",
+
 ]
 
 # Add CORS middleware

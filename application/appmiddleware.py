@@ -15,7 +15,7 @@ class UserAuthMiddleware(BaseHTTPMiddleware):
             try:
                 response = requests.get(f"http://localhost:5000/check-user-login/:{user_id}")
                 if response.status_code != 200:
-                    return JSONResponse(status_code=401, content={"status": 401, "detail": "user not authenticated"})
+                    return JSONResponse(status_code=response.status_code, content={"status": response.status_code, "detail": response.json().get("error")})
             except requests.exceptions.RequestException as e:
                 return JSONResponse(status_code=500, content={"status": 500, "detail": "internal server error"})      
         response = await call_next(request)
